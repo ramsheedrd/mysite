@@ -1,0 +1,19 @@
+version: '3.7'
+
+services:
+  web:
+    build:
+      context: ./app
+      dockerfile: Dockerfile.prod
+    command: gunicorn mysite.wsgi:application --bind 0.0.0.0:8000
+
+    expose:
+      - 8000
+
+  nginx:
+    build: ./nginx
+
+    ports:
+      - 80:8000
+    depends_on:
+      - web
